@@ -21,7 +21,8 @@ const options = {
         },
         servers: [
             {
-                url: "http://localhost:4000"
+                // url: "http://localhost:4000"
+                url: "https://book-api-phi.vercel.app"
             }
         ],
     },
@@ -31,6 +32,7 @@ const options = {
 const specs = swaggerJSDoc(options)
 
 const app = express()
+
 app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use(cors())
@@ -40,6 +42,13 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'))
 
+app.get("/", (req, res) => {
+    res.send("Express on Vercel");
+  });
+
 app.use("/books", booksRouter)
 
-app.listen(PORT, () => console.log(`The server is running on port ${PORT}`))
+app.listen(PORT, (error) => {
+    if (error) throw error;
+    console.log(`server running on port :${PORT}`);
+});
