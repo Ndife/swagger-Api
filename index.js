@@ -8,8 +8,13 @@ import helmet from "helmet";
 
 import { booksRouter } from "./routes/books.js";
 
-
+const app = express()
 const PORT = process.env.PORT || 4000
+
+app.listen(PORT, (error) => {
+    if (error) throw error;
+    console.log(`server running on port :${PORT}`);
+});
 
 const options = {
     definition: {
@@ -31,8 +36,6 @@ const options = {
 
 const specs = swaggerJSDoc(options)
 
-const app = express()
-
 app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use(cors())
@@ -47,8 +50,3 @@ app.get("/", (req, res) => {
   });
 
 app.use("/books", booksRouter)
-
-app.listen(PORT, (error) => {
-    if (error) throw error;
-    console.log(`server running on port :${PORT}`);
-});
